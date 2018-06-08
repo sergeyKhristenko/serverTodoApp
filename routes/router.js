@@ -33,13 +33,11 @@ router.post('/login', (req, res) => {
 
   User.authenticate(email, password, function(err, user) {
     if (err || !user) {
-      let error = new Error('Wrong email or password');
-      error.status = 401;
 
-      return res.send(error);
+      return res.send(401);
     }
 
-    return res.send({id: user.id});
+    return res.send({token: user.id});
   });
 });
 

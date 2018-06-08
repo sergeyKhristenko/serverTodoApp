@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "pm2 start ./app.js",
+    "start": "node ./app.js",
+    "start:dev": "pm2 start ./app.js",
     "restart": "pm2 reload all",
     "stop": "pm2 stop all"
   },
