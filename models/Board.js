@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const ColumnSchema = new Schema({
   id: Schema.Types.ObjectId,
   name: { type: String, required: true },
-  cards: [{ type: Schema.Types.ObjectId, ref: 'Note' }]
+  cards: [{ type: Schema.Types.ObjectId, ref: 'Card' }]
 });
 
 const BoardSchema = new Schema({

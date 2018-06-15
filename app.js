@@ -12,8 +12,15 @@ app.use(bodyParser.json());
 app.use(cors({ origin: '*' }));
 
 // include routes
-const routes = require('./routes/router');
-app.use('/', routes);
+const user = require('./routes/userRoutes');
+const cards = require('./routes/cardsRoutes');
+const boards = require('./routes/boardsRoutes');
+const columns = require('./routes/columnsRoutes');
+
+app.use('/', user);
+app.use('/cards', cards);
+app.use('/boards', boards);
+app.use('/columns', columns);
 
 const servre = app.listen(serverPort, () => {
   console.log(`Server is up on ${serverPort}`);

@@ -2,44 +2,12 @@ const mongoose = require('mongoose');
 
 const { db } = require('./config.json');
 
-const Note = require('../models/Note');
-const User = require('../models/User');
+const Card = require('../models/Card');
 const Board = require('../models/Board').Board;
 const Column = require('../models/Board').Column;
 
-const Schema = mongoose.Schema;
-
 exports.setUpConnection = function() {
   mongoose.connect(`mongodb://${db.host}/${db.name}`);
-};
-
-// TODO only for testing. Remove when ready
-exports.listNotes = function() {
-  return Note.find();
-};
-
-exports.listBoards = function(token) {
-  return Board.find({
-    users: token
-  });
-};
-
-exports.getBoard = function(boardId) {
-  return Board.findById(boardId)
-    .populate('columns')
-    .populate({
-      path: 'columns',
-      populate: { path: 'cards' }
-    });
-};
-
-exports.createBoard = function(data) {
-  const board = new Board({
-    name: data.name,
-    users: [data.userId]
-  });
-
-  return board.save();
 };
 
 exports.createColumn = async function(data) {
@@ -92,29 +60,7 @@ exports.updateColumn = async function(columnId, data) {
   return column.save();
 };
 
-exports.createNote = async function(data) {
-  const note = new Note({
-    title: data.title,
-    text: data.text,
-    color: data.color,
-    createAt: new Date()
-  });
-
-  const savedNote = await note.save();
-  const column = await Column.findById(data.columnId);
-  column.cards.push(note);
-  await column.save();
-
-  return savedNote;
-};
-
-exports.deleteNote = async function(id) {
-  const note = await Note.findById(id);
-  
-  return note.remove();
-};
-
-exports.updateNote = async function(id, data) {
+exports.updateCard = async function(id, data) {
   if (data.order !== undefined) {
     const column = await Column.findOne({ cards: id });
     const oldOrder = column.cards.indexOf(id);
@@ -131,15 +77,9 @@ exports.updateNote = async function(id, data) {
 
   const { order, ...dataToUpdate } = data;
 
-  return Note.findByIdAndUpdate(id, { $set: dataToUpdate }, { new: true }, function(err, note) {
+  return Card.findByIdAndUpdate(id, { $set: dataToUpdate }, { new: true }, function(err, card) {
     if (err) return console.error(err);
 
-    return note;
+    return card;
   });
-};
-
-exports.createUser = function(creds) {
-  const user = new User(({ email, password } = creds));
-
-  return user.save();
 };
