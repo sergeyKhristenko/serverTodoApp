@@ -1,13 +1,11 @@
 const mongoose = require('mongoose');
 
-const { db } = require('./config.json');
-
 const Card = require('../models/Card');
 const Board = require('../models/Board').Board;
 const Column = require('../models/Board').Column;
 
 exports.setUpConnection = function() {
-  mongoose.connect(`mongodb://${db.host}/${db.name}`);
+  mongoose.connect(`mongodb://${process.env.DBHOST}/${process.env.DBNAME}`);
 };
 
 exports.createColumn = async function(data) {

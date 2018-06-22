@@ -22,6 +22,6 @@ app.use('/cards', cards);
 app.use('/boards', boards);
 app.use('/columns', columns);
 
-const servre = app.listen(serverPort, () => {
+const servre = app.listen(process.env.PORT || serverPort, () => {
   console.log(`Server is up on ${serverPort}`);
 });
