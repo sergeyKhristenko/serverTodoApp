@@ -61,6 +61,18 @@ exports.updateColumn = async function(columnId, data) {
 };
 
 exports.updateCard = async function(id, data) {
+  const card = await Card.findById(id);
+
+  if(data.columnId !== undefined && card.columnId !== data.columnId) {
+    const oldColumn = await Column.findById(card.columnId);
+    oldColumn.cards.pull(card);
+    await oldColumn.save();
+
+    const newColumn = await Column.findById(data.columnId);
+    newColumn.cards.push(card);
+    await newColumn.save();
+  }
+
   if (data.order !== undefined) {
     const column = await Column.findOne({ cards: id });
     const oldOrder = column.cards.indexOf(id);
@@ -74,6 +86,7 @@ exports.updateCard = async function(id, data) {
       await column.save();
     }
   }
+
 
   const { order, ...dataToUpdate } = data;
 

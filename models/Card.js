@@ -7,7 +7,8 @@ const CardSchema = new Schema({
   text: { type: String, required: true },
   color: { type: String },
   order: { type: Number },
-  createdAt: { type: Date }
+  createdAt: { type: Date },
+  columnId: { type: Schema.Types.ObjectId, ref: 'Column' }
 });
 
 CardSchema.pre('remove', function(next) {

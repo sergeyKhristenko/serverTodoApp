@@ -17,7 +17,8 @@ router.post('/', async (req, res) => {
     title: body.title,
     text: body.text,
     color: body.color,
-    createAt: new Date()
+    createAt: new Date(),
+    columnId: body.columnId
   });
 
   const savedCard = await card.save();
@@ -33,7 +34,7 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
-  const card = await Card.findById(id);
+  const card = await Card.findById(req.params.id);
   await card.remove();
 
   res.sendStatus(200);
