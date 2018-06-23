@@ -17,7 +17,7 @@ router.post('/login', (req, res) => {
       return res.send(401);
     }
 
-    return res.send({ token: user.id });
+    return res.send({ email: user.email, token: user.id });
   });
 });
 
